@@ -1,6 +1,6 @@
 <?php
 /**
-*
+	*
 * @package phpBB Extension - Referrals
 * @copyright (c) 2016 dmzx - http://www.dmzx-web.net
 * @license http://opensource.org/licenses/gpl-2.0.php GNU General Public License v2
@@ -155,12 +155,12 @@ class referral_module
 						$contest_duration			= $request->variable('contest_duration', array('' => ''));
 						$contest_duration_current 	= $request->variable('contest_duration_current', '');
 						$contest_status				= $request->variable('contest_status', '');
-
+						
 						if ($contest_name === '')
 						{
-				 			trigger_error($user->lang['ENTER_CONTEST_NAME'] . adm_back_link($this->u_action), E_USER_WARNING);
+							trigger_error($user->lang['ENTER_CONTEST_NAME'] . adm_back_link($this->u_action), E_USER_WARNING);
 						}
-
+			
 						$sql = 'SELECT *
 							FROM ' . $table_referral_contests . "
 							WHERE contest_id = $contest_id";
@@ -382,7 +382,9 @@ class referral_module
 				$db->sql_freeresult($result);
 
 				$sql = 'SELECT COUNT(user_id) AS total_referrers
-					FROM ' . USERS_TABLE . ' WHERE user_type IN (' . USER_NORMAL . ', ' . USER_FOUNDER . ') AND user_referrals >=1';;
+					FROM ' . USERS_TABLE . ' 
+					WHERE user_type IN (' . USER_NORMAL . ', ' . USER_FOUNDER . ') 
+					AND user_referrals >=1';;
 				$result = $db->sql_query($sql);
 				$total_referrers = (int) $db->sql_fetchfield('total_referrers');
 

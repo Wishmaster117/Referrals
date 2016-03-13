@@ -175,7 +175,7 @@ class listener implements EventSubscriberInterface
 
 			// If the referrer is valid, set the cookie
 			if (!empty($row['user_id']))
-			{ 
+			{
 				$this->user->set_cookie('referrer_id', $r, time()+60*60*24*365);
 
 				header("HTTP/1.1 301 Moved Permanently");
