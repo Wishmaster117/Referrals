@@ -1,0 +1,86 @@
+<!-- INCLUDE overall_header.html -->
+
+<a name="maincontent"></a>
+
+<h1>{L_ACP_REFERRAL} {L_ACP_REFERRERS_LIST}</h1>
+<p>{L_ACP_MOD_VERSION} {MOD_VERSION}</p>
+
+<!-- IF not VIEW_REFERRALS -->
+<form action="{U_ACTION}" method="POST">
+	<fieldset class="display-options" style="float: left">
+		{L_SEARCH_REFERRER}{L_COLON} <input type="text" name="search_referrer" value="{SEARCH_INPUT}">&nbsp;<input type="submit" class="button2" name="filter" value="Search">
+	</fieldset>
+</form>
+<!-- IF .pagination or TOTAL_REFERRERS -->
+	<div class="pagination">
+		{TOTAL_REFERRERS}
+		<!-- IF .pagination -->
+			<!-- INCLUDE pagination.html -->
+		<!-- ELSE -->
+			&bull; {PAGE_NUMBER}
+		<!-- ENDIF -->
+	</div>
+<!-- ENDIF -->
+<div><br style="clear: both;"></div>
+<fieldset class="tabulated">
+	<legend>{L_ACP_REFERRERS_LIST}</legend>
+	<table cellspacing="1">
+		<thead>
+			<tr>
+			<th>{L_USERNAME}</th>
+			<th>{L_REFERRALS}</th>
+			<th>{L_ACTION}</th>
+			</tr>
+		</thead>
+		<tbody>
+			<!-- BEGIN referrers_list -->
+				<!-- IF referrers_list.S_ROW_COUNT is even --><tr class="row1"><!-- ELSE --><tr class="row2"><!-- ENDIF -->
+				<td>{referrers_list.USERNAME}</td>
+				<td>{referrers_list.REFERRALS}</td>
+				<td><a href="{referrers_list.U_VIEW_REFERRALS}">{L_VIEW_REFERRALS}</a></td>
+				</tr>
+			<!-- BEGINELSE -->
+				<tr class="row3">
+					<td colspan="5"><!-- IF SEARCH_REFERRER -->{L_REFERRER_NOT_FOUND}<!-- ELSE -->{L_NO_REFERRERS}<!-- ENDIF --></td>
+				</tr>
+			<!-- END referrers_list -->
+		</tbody>
+	</table>
+	<!-- ELSE -->
+	<table cellspacing="1">
+		<thead>
+			<tr>
+				<th>{L_USERNAME}</th>
+				<th>{L_REFERRER}</th>
+				<th>{L_REFERRED_ON}</th>
+				<th>{L_POSTS}</th>
+			</tr>
+		</thead>
+		<tbody>
+			<!-- BEGIN referrals_list -->
+			<!-- IF referrals_list.S_ROW_COUNT is even --><tr class="row1"><!-- ELSE --><tr class="row2"><!-- ENDIF -->
+				<td>{referrals_list.USERNAME}</td>
+				<td>{referrals_list.REFERRER}</td>
+				<td>{referrals_list.REFERRAL_SINCE}</td>
+				<td>{referrals_list.REFERRAL_POSTS}</td>
+				</tr>
+			<!-- END referrals_list -->
+		</tbody>
+	</table>
+	</fieldset>
+	<br />
+	<span><a href="{U_BACK}" style="float: {S_CONTENT_FLOW_BEGIN};">&laquo; {L_BACK}</a></span>
+<!-- ENDIF -->
+
+<!-- IF .pagination or TOTAL_REFERRERS -->
+<div class="pagination">
+	{TOTAL_REFERRERS}
+	<!-- IF .pagination -->
+		<!-- INCLUDE pagination.html -->
+	<!-- ELSE -->
+		&bull; {PAGE_NUMBER}
+	<!-- ENDIF -->
+</div>
+<!-- ENDIF -->
+
+<!-- INCLUDE overall_footer.html -->

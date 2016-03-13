@@ -1,0 +1,16 @@
+imports:
+    - { resource: tables.yml }
+services:
+    dmzx.referral.listener:
+        class: dmzx\referral\event\listener
+        arguments:
+            - '@user'
+            - '@template'
+            - '@dbal.conn'
+            - '@config'
+            - '@request'
+            - '%core.root_path%'
+            - '%dmzx.referral.table.referral%'
+            - '%dmzx.referral.table.referral.contests%'
+        tags:
+            - { name: event.listener }            
