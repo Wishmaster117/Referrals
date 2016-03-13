@@ -1,5 +1,0 @@
-Subject: {SUBJECT}
-
-{MESSAGE}
-
-{REFERRAL_LINK}
