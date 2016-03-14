@@ -382,8 +382,8 @@ class referral_module
 				$db->sql_freeresult($result);
 
 				$sql = 'SELECT COUNT(user_id) AS total_referrers
-					FROM ' . USERS_TABLE . ' 
-					WHERE user_type IN (' . USER_NORMAL . ', ' . USER_FOUNDER . ') 
+					FROM ' . USERS_TABLE . '
+					WHERE user_type IN (' . USER_NORMAL . ', ' . USER_FOUNDER . ')
 					AND user_referrals >=1';
 					$result = $db->sql_query($sql);
 				$total_referrers = (int) $db->sql_fetchfield('total_referrers');

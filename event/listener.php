@@ -128,7 +128,7 @@ class listener implements EventSubscriberInterface
 	public function ucp_register_user_row_after($event)
 	{
 		$rid = $this->request->variable($this->config['cookie_name'] . '_referrer_id', '', true, \phpbb\request\request_interface::COOKIE);
-		
+
 		if ($event['submit'] && $rid > 0)
 		{
 			$sql = 'SELECT username, user_referrals
@@ -174,7 +174,7 @@ class listener implements EventSubscriberInterface
 
 			// If the referrer is valid, set the cookie
 			if (!empty($row['user_id']))
-			{ 
+			{
 				$this->user->set_cookie('referrer_id', $r, time()+60*60*24*365);
 
 				header("HTTP/1.1 301 Moved Permanently");
