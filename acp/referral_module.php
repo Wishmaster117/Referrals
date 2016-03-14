@@ -158,9 +158,9 @@ class referral_module
 
 						if ($contest_name === '')
 						{
-				 			trigger_error($user->lang['ENTER_CONTEST_NAME'] . adm_back_link($this->u_action), E_USER_WARNING);
+							trigger_error($user->lang['ENTER_CONTEST_NAME'] . adm_back_link($this->u_action), E_USER_WARNING);
 						}
-
+						
 						$sql = 'SELECT *
 							FROM ' . $table_referral_contests . "
 							WHERE contest_id = $contest_id";
