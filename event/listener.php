@@ -127,10 +127,10 @@ class listener implements EventSubscriberInterface
 
 	public function ucp_register_user_row_after($event)
 	{
-		if ($event['submit'])
+		$rid = $this->request->variable($this->config['cookie_name'] . '_referrer_id', '', true, \phpbb\request\request_interface::COOKIE);
+		
+		if ($event['submit'] && $rid > 0)
 		{
-			$rid = $this->request->variable($this->config['cookie_name'] . '_referrer_id', '', true, \phpbb\request\request_interface::COOKIE);
-
 			$sql = 'SELECT username, user_referrals
 				FROM ' . USERS_TABLE . '
 				WHERE user_id = ' . $rid;
@@ -153,7 +153,6 @@ class listener implements EventSubscriberInterface
 				SET user_referrals = ' . $user_referrals . '
 				WHERE user_id = ' . $rid;
 			$this->db->sql_query($sql);
-
 		}
 	}
 

@@ -11,7 +11,7 @@ namespace dmzx\referral\migrations;
 
 class referral_data extends \phpbb\db\migration\migration
 {
-	var $ext_version = '1.0.0';
+	var $ext_version = '1.0.1';
 
 	public function update_data()
 	{
