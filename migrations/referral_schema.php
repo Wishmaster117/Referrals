@@ -17,23 +17,23 @@ class referral_schema extends \phpbb\db\migration\migration
 			'add_tables'	=> array(
 				$this->table_prefix . 'referrals'	=> array(
 					'COLUMNS'	=> array(
-						'referral_id'		=> array('UINT', null, 'auto_increment'),
-						'referral_username' => array('VCHAR', ''),
-						'referrer_id'		=> array('UINT', 0),
-						'referrer_username' => array('VCHAR', ''),
-						'referral_since'	=> array('TIMESTAMP', 0),
+						'referral_id'			=> array('UINT', null, 'auto_increment'),
+						'referral_username' 	=> array('VCHAR', ''),
+						'referrer_id'			=> array('UINT', 0),
+						'referrer_username' 	=> array('VCHAR', ''),
+						'referral_since'		=> array('TIMESTAMP', 0),
 					),
 					'PRIMARY_KEY' => 'referral_id',
 				),
 				$this->table_prefix . 'referral_contests'	=> array(
 					'COLUMNS'	=> array(
 						'contest_id'			=> array('UINT', null, 'auto_increment'),
-						'contest_name'		=> array('VCHAR', ''),
-						'contest_description' => array('TEXT', ''),
-						'contest_condition'	=> array('UINT', 0),
+						'contest_name'			=> array('VCHAR', ''),
+						'contest_description' 	=> array('TEXT', ''),
+						'contest_condition'		=> array('UINT', 0),
 						'contest_start_date'	=> array('TIMESTAMP', 0),
-						'contest_end_date'	=> array('TIMESTAMP', 0),
-						'contest_duration'	=> array('VCHAR', ''),
+						'contest_end_date'		=> array('TIMESTAMP', 0),
+						'contest_duration'		=> array('VCHAR', ''),
 						'contest_winner'		=> array('VCHAR', ''),
 					),
 					'PRIMARY_KEY' => 'contest_id',

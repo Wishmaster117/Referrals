@@ -47,7 +47,7 @@ class listener implements EventSubscriberInterface
 	* @param \phpbb\template\template			$template
 	* @param \phpbb\db\driver\driver_interface	$db
 	* @param \phpbb\config\config				$config
-	* @param \phpbb\request\request			$request
+	* @param \phpbb\request\request				$request
 	* @param									$phpbb_root_path
 	* @param									$referral_table
 	* @param									$referral_contests_table
@@ -92,12 +92,13 @@ class listener implements EventSubscriberInterface
 		$member = $event['member'];
 		$user_id = $member['user_id'];
 
-		// Grab user's bank holdings
+		// Grab user's referrals
 		$sql = 'SELECT user_referrals
-				FROM ' . USERS_TABLE . '
-				WHERE user_id = '. $user_id;
+			FROM ' . USERS_TABLE . '
+			WHERE user_id = '. $user_id;
 		$result = $this->db->sql_query($sql);
 		$referrals = $this->db->sql_fetchfield('user_referrals');
+
 		$this->template->assign_vars(array(
 			'REFERRALS'		=> (!empty($this->config['user_referrals_profile']) && $this->config['user_referrals_profile'] == true) ? $referrals : 0,
 		));
@@ -139,10 +140,10 @@ class listener implements EventSubscriberInterface
 			$this->db->sql_freeresult($result);
 
 			$sql_ary = array(
-				'referral_username'	=> $event['data']['username'],
-				'referrer_id'		=> $rid,
-				'referrer_username'	=> $row['username'],
-				'referral_since'	 => time(),
+				'referral_username'		=> $event['data']['username'],
+				'referrer_id'			=> $rid,
+				'referrer_username'		=> $row['username'],
+				'referral_since'	 	=> time(),
 			);
 
 			$this->db->sql_query('INSERT INTO ' . $this->referral_table . ' ' . $this->db->sql_build_array('INSERT', $sql_ary));
@@ -194,18 +195,17 @@ class listener implements EventSubscriberInterface
 				$row = $this->db->sql_fetchrow($result);
 
 				$this->template->assign_vars(array(
-					'CONTEST_DISPLAY'	 => $this->config['referral_contests_display'],
-					'CONTEST_NAME'		=> $row['contest_name'],
-					'CONTEST_DESCRIPTION' => html_entity_decode($row['contest_description']),
+					'CONTEST_DISPLAY'	 	=> $this->config['referral_contests_display'],
+					'CONTEST_NAME'			=> $row['contest_name'],
+					'CONTEST_DESCRIPTION' 	=> html_entity_decode($row['contest_description']),
 					'CONTEST_START_DATE'	=> $this->user->format_date($row['contest_start_date']),
-					'CONTEST_END_DATE'	=> $this->user->format_date($row['contest_end_date']),
-					'CONTEST_DURATION'	=> $row['contest_duration'],
+					'CONTEST_END_DATE'		=> $this->user->format_date($row['contest_end_date']),
+					'CONTEST_DURATION'		=> $row['contest_duration'],
 					'CONTEST_STATUS'		=> ($row['contest_end_date'] < time()) ? '<span style="color:red;">' . $this->user->lang['CONTEST_OVER'] . '</span>' : '<span style="color:green;">' . $this->user->lang['CONTEST_IN_PROGRESS'] . '</span>',
-					)
-				);
+				));
 
 				// Set some variables to use in statistics
-				$contest_id		 = $row['contest_id'];
+				$contest_id		 	= $row['contest_id'];
 				$contest_start_date = $row['contest_start_date'];
 				$contest_end_date	= $row['contest_end_date'];
 				$ref_min_posts		= $row['contest_condition'];
@@ -240,9 +240,8 @@ class listener implements EventSubscriberInterface
 							'REFERRER_USERNAME' => $row['referrer_username'],
 							'REFERRALS_COUNT'	=> $row['referrals_count'],
 							'CONTEST_POS'		=> '<img src="' . $this->phpbb_root_path . 'ext/dmzx/referral/styles/all/theme/images/contest_pos_' . $i . '.gif" alt="' . $i . '" />',
-							)
-						);
-							$i++;
+						));
+						$i++;
 					}
 					$this->db->sql_freeresult($result);
 
@@ -269,7 +268,7 @@ class listener implements EventSubscriberInterface
 					FROM ' . USERS_TABLE . '
 					WHERE user_type IN (' . USER_NORMAL . ', ' . USER_FOUNDER . ')
 					AND user_referrals >=1
-							ORDER BY user_referrals DESC';
+						ORDER BY user_referrals DESC';
 				$result = $this->db->sql_query_limit($sql, 5, 0);
 
 				while ($row = $this->db->sql_fetchrow($result))
@@ -277,16 +276,14 @@ class listener implements EventSubscriberInterface
 					$this->template->assign_block_vars('top_five_referrers', array(
 						'USERNAME'	=> get_username_string('full', $row['user_id'], $row['username'], $row['user_colour']),
 						'REFERRALS'	=> $row['user_referrals'],
-						)
-					);
+					));
 				}
 				$this->db->sql_freeresult($result);
 
 				// Set template variables
 				$this->template->assign_vars(array(
 					'TOP_FIVE_REFERRERS' => $this->config['top_five_referrers'],
-					)
-				);
+				));
 			}
 		}
 	}
