@@ -62,7 +62,7 @@ class ucp_referral_module
 					WHERE referrer_id = ' . $user->data['user_id'];
 					$result = $db->sql_query($sql);
 
-				while($row = $db->sql_fetchrow($result))
+				while ($row = $db->sql_fetchrow($result))
 				{
 					$template->assign_block_vars('referrals',array(
 						'REFERRAL_USERNAME' => get_username_string('full', $row['user_id'], $row['referral_username'], $row['user_colour']),

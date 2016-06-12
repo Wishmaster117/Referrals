@@ -28,7 +28,7 @@ class referral_module
 
 		$s_hidden_fields = '';
 
-		switch($mode)
+		switch ($mode)
 		{
 			case 'config':
 
