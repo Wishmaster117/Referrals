@@ -1,6 +1,6 @@
 # Referrals Extension
 
-[![Build Status](https://travis-ci.org/dmzx/Refferals.svg?branch=master)](https://travis-ci.org/dmzx/Refferals)
+[![Build Status](https://travis-ci.org/dmzx/Referrals.svg?branch=master)](https://travis-ci.org/dmzx/Referrals)
 
 ## Install
 1. Download the latest release.
