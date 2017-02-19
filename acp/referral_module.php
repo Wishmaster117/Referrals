@@ -17,6 +17,8 @@ class referral_module
 	{
 		global $config, $db, $phpbb_container, $user, $template, $phpbb_root_path, $phpbb_admin_path, $phpEx, $request;
 
+		$user->add_lang_ext('dmzx/referral', 'acp_referral');
+
 		$action = $request->variable('action', '');
 		$rid	= $request->variable('rid', 0);
 
@@ -35,7 +37,7 @@ class referral_module
 				$this->tpl_name	= 'acp_referral_config';
 				$this->page_title = 'ACP_REFERRAL_CONFIG';
 
-				$submit						= (isset($_POST['submit'])) ? true : false;
+				$submit						= $request->is_set_post('submit');
 				$top_five_referrers			= $request->variable('top_five_referrers', 0);
 				$user_referrals_viewtopic	= $request->variable('user_referrals_viewtopic', 0);
 				$user_referrals_profile		= $request->variable('user_referrals_profile', 0);
@@ -56,8 +58,7 @@ class referral_module
 					'USER_REFERRALS_VIEWTOPIC'	=> $config['user_referrals_viewtopic'],
 					'USER_REFERRALS_PROFILE'	=> $config['user_referrals_profile'],
 					'DISPLAY_REFERRAL_CONTESTS' => $config['referral_contests_display'],
-					)
-				);
+				));
 
 			break;
 
@@ -104,8 +105,8 @@ class referral_module
 						$contest_info = $db->sql_fetchrow($result);
 						$db->sql_freeresult($result);
 
-						$contest_duration		 = explode(' ', $contest_info['contest_duration']);
-						$contest_duration_options = '';
+						$contest_duration		 	= explode(' ', $contest_info['contest_duration']);
+						$contest_duration_options 	= '';
 
 						foreach ($time_options as $key => $val)
 						{
@@ -126,8 +127,7 @@ class referral_module
 							'CONTEST_CONDITION'			=> (isset($contest_info['contest_condition'])) ? $contest_info['contest_condition'] : 0,
 							'CONTEST_DURATION_VAL'	 	=> $contest_duration[0],
 							'CONTEST_DURATION_OPTIONS' 	=> $contest_duration_options,
-							)
-						);
+						));
 
 						$contest_start_date			= (isset($contest_info['contest_start_date'])) ? $contest_info['contest_start_date'] : time();
 						$contest_end_date		 	= (isset($contest_info['contest_end_date'])) ? $contest_info['contest_end_date'] : 0;
@@ -230,17 +230,16 @@ class referral_module
 
 						$template->assign_vars(array(
 							'VIEW_STATS'	=> true,
-							)
-						);
+						));
 
 						$sql = 'SELECT * ,
 							COUNT(referrer_username) AS referrals_count
 							FROM ' . $table_referral . '
-							LEFT JOIN ' . USERS_TABLE . '
-							ON referral_username=username
+								LEFT JOIN ' . USERS_TABLE . '
+								ON referral_username=username
 							WHERE referral_since
 							BETWEEN ' . $start_date . ' AND ' . $end_date . '
-							AND user_posts >= ' . $ref_min_posts . '
+								AND user_posts >= ' . $ref_min_posts . '
 							GROUP BY referrer_username
 							ORDER BY referrals_count DESC';
 						$result = $db->sql_query($sql);
@@ -258,8 +257,7 @@ class referral_module
 								'VIEW_REFERRALS'	=> $this->u_action . '&amp;action=view_cr&amp;rid=' . $row['referrer_id'] . '&amp;start_date=' . $start_date . '&amp;end_date=' . $end_date . '&amp;ref_min_posts=' . $ref_min_posts,
 								'TOTAL_REFERRALS'	=> $total_referrals,
 								'CONTEST_POS'		=> ($i <= 3) ? '<img src="' . $phpbb_root_path . 'ext/dmzx/referral/styles/all/theme/images/contest_pos_' . $i . '.gif" />' : $i,
-								)
-							);
+							));
 							$i++;
 						}
 						$db->sql_freeresult($result);
@@ -270,17 +268,16 @@ class referral_module
 
 						$template->assign_vars(array(
 							'VIEW_REFERRALS'	=> true,
-							)
-						);
+						));
 
 						$sql = 'SELECT *
 							FROM ' . $table_referral . '
-							LEFT JOIN ' . USERS_TABLE . '
-							ON referral_username=username
+								LEFT JOIN ' . USERS_TABLE . '
+								ON referral_username = username
 							WHERE referral_since
 							BETWEEN ' . $start_date . ' AND ' . $end_date . '
-							AND user_posts >= ' . $ref_min_posts . '
-							AND referrer_id = ' . $rid . '
+								AND user_posts >= ' . $ref_min_posts . '
+								AND referrer_id = ' . $rid . '
 							ORDER BY referral_since ASC';
 						$result = $db->sql_query($sql);
 
@@ -290,8 +287,7 @@ class referral_module
 								'REFERRAL_USERNAME' => get_username_string('full', $row['user_id'], $row['referral_username'], $row['user_colour']),
 								'USER_POSTS'		=> $row['user_posts'],
 								'REFERRAL_SINCE'	=> $user->format_date($row['referral_since']),
-								)
-							);
+							));
 						}
 
 					break;
@@ -308,16 +304,15 @@ class referral_module
 				while ($row = $db->sql_fetchrow($result))
 				{
 					$template->assign_block_vars('contests', array(
-						'CONTEST_NAME'		=> $row['contest_name'],
-						'CONTEST_START_DATE' => $user->format_date($row['contest_start_date']),
-						'CONTEST_END_DATE'	=> $user->format_date($row['contest_end_date']),
-						'CONTEST_DURATION'	=> $row['contest_duration'],
-						'CONTEST_STATUS'	 => ($row['contest_end_date'] < time()) ? '<span style="color:red;">' . $user->lang['CONTEST_OVER'] . '</span>' : '<span style="color:green;">' . $user->lang['CONTEST_IN_PROGRESS'] . '</span>',
-						'U_EDIT'			 => $this->u_action . '&amp;action=edit&amp;id=' . $row['contest_id'],
-						'U_DELETE'			 => $this->u_action . '&amp;action=delete&amp;id=' . $row['contest_id'],
-						'U_STATS'			 => $this->u_action . '&amp;action=stats&amp;id=' . $row['contest_id'] . '&amp;start_date=' . $row['contest_start_date'] . '&amp;end_date=' . $row['contest_end_date'] . '&amp;ref_min_posts=' . $row['contest_condition'],
-						)
-					);
+						'CONTEST_NAME'			=> $row['contest_name'],
+						'CONTEST_START_DATE' 	=> $user->format_date($row['contest_start_date']),
+						'CONTEST_END_DATE'		=> $user->format_date($row['contest_end_date']),
+						'CONTEST_DURATION'		=> $row['contest_duration'],
+						'CONTEST_STATUS'	 	=> ($row['contest_end_date'] < time()) ? '<span style="color:red;">' . $user->lang['CONTEST_OVER'] . '</span>' : '<span style="color:green;">' . $user->lang['CONTEST_IN_PROGRESS'] . '</span>',
+						'U_EDIT'			 	=> $this->u_action . '&amp;action=edit&amp;id=' . $row['contest_id'],
+						'U_DELETE'			 	=> $this->u_action . '&amp;action=delete&amp;id=' . $row['contest_id'],
+						'U_STATS'			 	=> $this->u_action . '&amp;action=stats&amp;id=' . $row['contest_id'] . '&amp;start_date=' . $row['contest_start_date'] . '&amp;end_date=' . $row['contest_end_date'] . '&amp;ref_min_posts=' . $row['contest_condition'],
+					));
 				}
 				$db->sql_freeresult($result);
 
@@ -333,8 +328,7 @@ class referral_module
 				$template->assign_vars(array(
 					'TOTAL_CONTESTS' => ($total_contests == 1) ? $user->lang['LIST_CONTEST'] : sprintf($user->lang['LIST_CONTESTS'], $total_contests),
 					'ICON_STATS'	 => '<img src="' . $phpbb_root_path . 'ext/dmzx/referral/styles/all/theme/images/icon_stats.png" alt="' . $user->lang['VIEW_STATISTICS'] . '" title="' . $user->lang['VIEW_STATISTICS'] . '" />',
-					)
-				);
+				));
 
 			break;
 
@@ -353,18 +347,17 @@ class referral_module
 					$template->assign_vars(array(
 						'SEARCH_REFERRER' => true,
 						'SEARCH_INPUT'	=> $search_referrer,
-						)
-					);
+					));
 
 					$sql = 'SELECT *
 						FROM ' . USERS_TABLE . '
-						WHERE username="' . $search_referrer . '" AND user_referrals >=1 ORDER BY user_referrals DESC';
+						WHERE username="' . $search_referrer . '" AND user_referrals >= 1 ORDER BY user_referrals DESC';
 				}
 				else
 				{
 					$sql = 'SELECT *
 						FROM ' . USERS_TABLE . '
-						WHERE user_type IN (' . USER_NORMAL . ', ' . USER_FOUNDER . ') AND user_referrals >=1 ORDER BY user_referrals DESC';
+						WHERE user_type IN (' . USER_NORMAL . ', ' . USER_FOUNDER . ') AND user_referrals >= 1 ORDER BY user_referrals DESC';
 				}
 
 				$result = $db->sql_query($sql);
@@ -372,19 +365,18 @@ class referral_module
 				while ($row = $db->sql_fetchrow($result))
 				{
 					$template->assign_block_vars('referrers_list', array(
-						'USERNAME'		 => get_username_string('full', $row['user_id'], $row['username'], $row['user_colour']),
+						'USERNAME'		 	=> get_username_string('full', $row['user_id'], $row['username'], $row['user_colour']),
 						'USER_ID'			=> $row['user_id'],
-						'REFERRALS'		=> $row['user_referrals'],
-						'U_VIEW_REFERRALS' => $this->u_action . '&amp;action=view_referrals&amp;rid=' . $row['user_id'],
-						)
-					);
+						'REFERRALS'			=> $row['user_referrals'],
+						'U_VIEW_REFERRALS' 	=> $this->u_action . '&amp;action=view_referrals&amp;rid=' . $row['user_id'],
+					));
 				}
 				$db->sql_freeresult($result);
 
 				$sql = 'SELECT COUNT(user_id) AS total_referrers
 					FROM ' . USERS_TABLE . '
 					WHERE user_type IN (' . USER_NORMAL . ', ' . USER_FOUNDER . ')
-					AND user_referrals >=1';
+						AND user_referrals >= 1 ';
 					$result = $db->sql_query($sql);
 				$total_referrers = (int) $db->sql_fetchfield('total_referrers');
 
@@ -394,8 +386,7 @@ class referral_module
 
 				$template->assign_vars(array(
 					'TOTAL_REFERRERS'	 => ($total_referrers == 1) ? $user->lang['LIST_REFERRER'] : sprintf($user->lang['LIST_REFERRERS'], $total_referrers),
-					)
-				);
+				));
 
 				switch ($action)
 				{
@@ -409,35 +400,32 @@ class referral_module
 						$sql = 'SELECT *
 							FROM ' . $table_referral . '
 							LEFT JOIN ' . USERS_TABLE . '
-							ON referral_username=username
-							WHERE referrer_id=' . $rid;
+								ON referral_username = username
+							WHERE referrer_id = ' . $rid;
 						$result = $db->sql_query($sql);
 
 						while ($row = $db->sql_fetchrow($result))
 						{
 							$template->assign_block_vars('referrals_list', array(
-								'USERNAME'		=> get_username_string('full', $row['user_id'], $row['referral_username'], $row['user_colour']),
-								'REFERRER'		=> $row['referrer_username'],
-								'REFERRAL_SINCE' => $user->format_date($row['referral_since']),
-								'REFERRAL_POSTS' => $row['user_posts']
-								)
-							);
+								'USERNAME'			=> get_username_string('full', $row['user_id'], $row['referral_username'], $row['user_colour']),
+								'REFERRER'			=> $row['referrer_username'],
+								'REFERRAL_SINCE' 	=> $user->format_date($row['referral_since']),
+								'REFERRAL_POSTS' 	=> $row['user_posts']
+							));
 						}
 						$db->sql_freeresult($result);
 
 					break;
 				}
-
 			break;
 		}
 
 		// Global vars
 		$template->assign_vars(array(
-			'MOD_VERSION'	 => $config['referral_mod_version'],
+			'MOD_VERSION'	 	=> $config['referral_mod_version'],
 			'U_ACTION'			=> $this->u_action,
 			'U_BACK'			=> $this->u_action,
-			'S_HIDDEN_FIELDS' => $s_hidden_fields,
-			)
-		);
+			'S_HIDDEN_FIELDS' 	=> $s_hidden_fields,
+		));
 	}
 }

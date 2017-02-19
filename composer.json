@@ -3,8 +3,8 @@
 	"type": "phpbb-extension",
 	"description": "Allows members to refer others.",
 	"homepage": "http://www.dmzx-web.net",
-	"version": "1.0.2",
-	"time": "2016-05-15",
+	"version": "1.0.3",
+	"time": "2017-02-19",
 	"keywords": ["phpbb", "extension", "referrals"],
 	"license": "GPL-2.0",
 	"authors": [
@@ -24,7 +24,7 @@
 	"extra": {
 		"display-name": "Referrals",
 		"soft-require": {
-			"phpbb/phpbb": ">=3.1.0,<3.2.0@dev"
+			"phpbb/phpbb": ">=3.1.0,<3.3"
 		},
 		"version-check": {
 			"host": "www.dmzx-web.net",

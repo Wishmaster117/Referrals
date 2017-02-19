@@ -3,7 +3,8 @@
 <a name="maincontent"></a>
 
 <h1>{L_ACP_REFERRAL} {L_ACP_REFERRERS_LIST}</h1>
-<p>{L_ACP_MOD_VERSION} {MOD_VERSION}</p>
+
+<p><img src="https://img.shields.io/badge/{{ lang('Version') }}-{{ MOD_VERSION }}-green.svg?style=plastic" /></p>
 
 <!-- IF not VIEW_REFERRALS -->
 <form action="{U_ACTION}" method="POST">
@@ -12,14 +13,14 @@
 	</fieldset>
 </form>
 <!-- IF .pagination or TOTAL_REFERRERS -->
-	<div class="pagination">
-		{TOTAL_REFERRERS}
-		<!-- IF .pagination -->
-			<!-- INCLUDE pagination.html -->
-		<!-- ELSE -->
-			&bull; {PAGE_NUMBER}
-		<!-- ENDIF -->
-	</div>
+<div class="pagination">
+	{TOTAL_REFERRERS}
+	<!-- IF .pagination -->
+		<!-- INCLUDE pagination.html -->
+	<!-- ELSE -->
+		&bull; {PAGE_NUMBER}
+	<!-- ENDIF -->
+</div>
 <!-- ENDIF -->
 <div><br style="clear: both;"></div>
 <fieldset class="tabulated">
@@ -67,9 +68,9 @@
 			<!-- END referrals_list -->
 		</tbody>
 	</table>
-	</fieldset>
-	<br />
-	<span><a href="{U_BACK}" style="float: {S_CONTENT_FLOW_BEGIN};">&laquo; {L_BACK}</a></span>
+</fieldset>
+<br />
+<span><a href="{U_BACK}" style="float: {S_CONTENT_FLOW_BEGIN};">&laquo; {L_BACK}</a></span>
 <!-- ENDIF -->
 
 <!-- IF .pagination or TOTAL_REFERRERS -->

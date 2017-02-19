@@ -105,9 +105,9 @@ class ucp_referral_module
 							$messenger->to($recipient, '');
 							$messenger->from($sender_email, '');
 							$messenger->assign_vars(array(
-								'SUBJECT'		 => $subject,
-								'MESSAGE'		 => $message,
-								'REFERRAL_LINK'	=> generate_board_url() . "/index.$phpEx?r=" . $user->data['user_id'],
+								'SUBJECT'		 	=> $subject,
+								'MESSAGE'		 	=> $message,
+								'REFERRAL_LINK'		=> generate_board_url() . "/index.$phpEx?r=" . $user->data['user_id'],
 							));
 							$messenger->send();
 						}
@@ -124,7 +124,6 @@ class ucp_referral_module
 						));
 					}
 				}
-
 			break;
 		}
 	}

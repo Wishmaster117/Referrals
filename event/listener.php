@@ -32,7 +32,7 @@ class listener implements EventSubscriberInterface
 	protected $request;
 
 	/** @var string */
-	protected $phpbb_root_path;
+	protected $root_path;
 
 	/** @var string */
 	protected $referral_table;
@@ -48,19 +48,28 @@ class listener implements EventSubscriberInterface
 	* @param \phpbb\db\driver\driver_interface	$db
 	* @param \phpbb\config\config				$config
 	* @param \phpbb\request\request				$request
-	* @param									$phpbb_root_path
-	* @param									$referral_table
-	* @param									$referral_contests_table
+	* @param string								$root_path
+	* @param string								$referral_table
+	* @param string								$referral_contests_table
 	*
 	*/
-	public function __construct(\phpbb\user $user, \phpbb\template\template $template, \phpbb\db\driver\driver_interface $db, \phpbb\config\config $config, \phpbb\request\request $request, $phpbb_root_path, $referral_table, $referral_contests_table)
+	public function __construct(
+		\phpbb\user $user,
+		\phpbb\template\template $template,
+		\phpbb\db\driver\driver_interface $db,
+		\phpbb\config\config $config,
+		\phpbb\request\request $request,
+		$root_path,
+		$referral_table,
+		$referral_contests_table
+	)
 	{
 		$this->user						= $user;
 		$this->template					= $template;
 		$this->db						= $db;
 		$this->config					= $config;
 		$this->request					= $request;
-		$this->phpbb_root_path 			= $phpbb_root_path;
+		$this->root_path 				= $root_path;
 		$this->referral_table 			= $referral_table;
 		$this->referral_contests_table 	= $referral_contests_table;
 	}
@@ -72,7 +81,7 @@ class listener implements EventSubscriberInterface
 			'core.memberlist_view_profile'		=> 'memberlist_view_profile',
 			'core.viewtopic_cache_user_data'	=> 'modify_viewtopic_usercache_data',
 			'core.viewtopic_modify_post_row'	=> 'viewtopic_modify_post_row',
-			'core.ucp_register_data_after'		=> 'ucp_register_user_row_after',
+			'core.user_add_after'				=> 'user_add_after',
 			'core.index_modify_page_title'		=> 'index_modify_page_title',
 		);
 	}
@@ -100,7 +109,7 @@ class listener implements EventSubscriberInterface
 		$referrals = $this->db->sql_fetchfield('user_referrals');
 
 		$this->template->assign_vars(array(
-			'REFERRALS'		=> (!empty($this->config['user_referrals_profile']) && $this->config['user_referrals_profile'] == true) ? $referrals : 0,
+			'REFERRALS'	=> (!empty($this->config['user_referrals_profile']) && $this->config['user_referrals_profile'] == true) ? $referrals : 0,
 		));
 	}
 
@@ -108,9 +117,11 @@ class listener implements EventSubscriberInterface
 	{
 		$user_cache_data = $event['user_cache_data'];
 		$row = $event['row'];
+
 		$user_cache_data = array_merge($user_cache_data, array(
 			'referrals'	 => (!empty($row['user_referrals'])) ? $row['user_referrals'] : 0,
 		));
+
 		$event['user_cache_data'] = $user_cache_data;
 	}
 
@@ -120,27 +131,31 @@ class listener implements EventSubscriberInterface
 		$user_cache = $event['user_poster_data'];
 		$poster_id = $event['user_id'];
 		$post_row = $event['post_row'];
+
 		$post_row = array_merge($post_row, array(
 			'POSTER_REFERRALS'	=> (!empty($this->config['user_referrals_viewtopic']) && $this->config['user_referrals_viewtopic'] == true) ? $user_cache['referrals'] : 0,
 		));
+
 		$event['post_row'] = $post_row;
 	}
 
-	public function ucp_register_user_row_after($event)
+	public function user_add_after($event)
 	{
 		$rid = $this->request->variable($this->config['cookie_name'] . '_referrer_id', '', true, \phpbb\request\request_interface::COOKIE);
 
-		if ($event['submit'] && $rid > 0)
+		if ($rid > 0)
 		{
 			$sql = 'SELECT username, user_referrals
 				FROM ' . USERS_TABLE . '
-				WHERE user_id = ' . $rid;
+				WHERE user_id = ' . (int) $rid;
 			$result = $this->db->sql_query($sql);
 			$row = $this->db->sql_fetchrow($result);
 			$this->db->sql_freeresult($result);
 
+			$user_row	= $event['user_row'];
+
 			$sql_ary = array(
-				'referral_username'		=> $event['data']['username'],
+				'referral_username'		=> $user_row['username'],
 				'referrer_id'			=> $rid,
 				'referrer_username'		=> $row['username'],
 				'referral_since'	 	=> time(),
@@ -167,7 +182,7 @@ class listener implements EventSubscriberInterface
 		{
 			$sql = 'SELECT user_id
 				FROM ' . USERS_TABLE . '
-				WHERE user_id=' . $r . '
+				WHERE user_id = ' . (int) $r . '
 				AND user_type IN (' . USER_NORMAL . ', ' . USER_FOUNDER . ')';
 			$result = $this->db->sql_query($sql);
 			$row = $this->db->sql_fetchrow($result);
@@ -215,14 +230,15 @@ class listener implements EventSubscriberInterface
 				if ($row)
 				{
 					// Get contest statistics
-					$sql = 'SELECT * ,
+					$sql = 'SELECT *,
 						COUNT(referrer_username) AS referrals_count
 						FROM ' . $this->referral_table . '
-						LEFT JOIN ' . USERS_TABLE . '
-						ON referral_username=username
+							LEFT JOIN ' . USERS_TABLE . '
+								ON referral_username = username
 						WHERE referral_since
-						BETWEEN ' . $contest_start_date . ' AND ' . $contest_end_date . '
-						AND user_posts >= ' . $ref_min_posts . '
+							BETWEEN ' . $contest_start_date . '
+							AND ' . $contest_end_date . '
+							AND user_posts >= ' . $ref_min_posts . '
 						GROUP BY referrer_username
 						ORDER BY referrals_count DESC';
 					$result = $this->db->sql_query_limit($sql, 3, 0);
@@ -239,7 +255,7 @@ class listener implements EventSubscriberInterface
 						$this->template->assign_block_vars('contest_stats', array(
 							'REFERRER_USERNAME' => $row['referrer_username'],
 							'REFERRALS_COUNT'	=> $row['referrals_count'],
-							'CONTEST_POS'		=> '<img src="' . $this->phpbb_root_path . 'ext/dmzx/referral/styles/all/theme/images/contest_pos_' . $i . '.gif" alt="' . $i . '" />',
+							'CONTEST_POS'		=> '<img src="' . $this->root_path . 'ext/dmzx/referral/styles/all/theme/images/contest_pos_' . $i . '.gif" alt="' . $i . '" />',
 						));
 						$i++;
 					}
@@ -267,7 +283,7 @@ class listener implements EventSubscriberInterface
 				$sql = 'SELECT *
 					FROM ' . USERS_TABLE . '
 					WHERE user_type IN (' . USER_NORMAL . ', ' . USER_FOUNDER . ')
-					AND user_referrals >=1
+					AND user_referrals >= 1
 						ORDER BY user_referrals DESC';
 				$result = $this->db->sql_query_limit($sql, 5, 0);
 
