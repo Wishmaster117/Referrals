@@ -16,7 +16,6 @@ class referral_data extends \phpbb\db\migration\migration
 	public function update_data()
 	{
 		return array(
-
 			// Add config
 			array('config.add', array('referral_mod_version', $this->ext_version)),
 			array('config.add', array('top_five_referrers', '0', '0')),

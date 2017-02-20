@@ -20,9 +20,9 @@ class ucp_referral_info
 			'title'		=> 'UCP_REFERRAL',
 			'version'	=> $config['referral_version'],
 			'modes'		=> array(
-				'statistics'	=> array('title' => 'UCP_STATISTICS', 'auth' => '', 'cat' => array('UCP_REFERRAL')),
-				'referrals'		=> array('title' => 'UCP_REFERRALS', 'auth' => '', 'cat' => array('UCP_REFERRAL')),
-				'invite'		=> array('title' => 'UCP_INVITE', 'auth' => '', 'cat' => array('UCP_REFERRAL')),
+				'statistics'	=> array('title' => 'UCP_STATISTICS', 'auth' => 'ext_dmzx/referral', 'cat' => array('UCP_REFERRAL')),
+				'referrals'		=> array('title' => 'UCP_REFERRALS', 'auth' => 'ext_dmzx/referral', 'cat' => array('UCP_REFERRAL')),
+				'invite'		=> array('title' => 'UCP_INVITE', 'auth' => 'ext_dmzx/referral', 'cat' => array('UCP_REFERRAL')),
 			),
 		);
 	}

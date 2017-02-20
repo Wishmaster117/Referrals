@@ -10,25 +10,30 @@
 namespace dmzx\referral\event;
 
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
+use phpbb\user;
+use phpbb\template\template;
+use phpbb\db\driver\driver_interface as db_interface;
+use phpbb\config\config;
+use phpbb\request\request_interface;
 
 /**
 * Event listener
 */
 class listener implements EventSubscriberInterface
 {
-	/** @var \phpbb\user */
+	/** @var user */
 	protected $user;
 
-	/** @var \phpbb\template\template */
+	/** @var template */
 	protected $template;
 
-	/** @var \phpbb\db\driver\driver_interface */
+	/** @var db_interface */
 	protected $db;
 
-	/** @var \phpbb\config\config */
+	/** @var config */
 	protected $config;
 
-	/** @var \phpbb\request\request */
+	/** @var request_interface */
 	protected $request;
 
 	/** @var string */
@@ -43,22 +48,22 @@ class listener implements EventSubscriberInterface
 	/**
 	* Constructor
 	*
-	* @param \phpbb\user						$user
-	* @param \phpbb\template\template			$template
-	* @param \phpbb\db\driver\driver_interface	$db
-	* @param \phpbb\config\config				$config
-	* @param \phpbb\request\request				$request
-	* @param string								$root_path
-	* @param string								$referral_table
-	* @param string								$referral_contests_table
+	* @param user				$user
+	* @param template			$template
+	* @param db_interface 		$db
+	* @param config				$config
+	* @param request_interface 	$request
+	* @param string				$root_path
+	* @param string				$referral_table
+	* @param string				$referral_contests_table
 	*
 	*/
 	public function __construct(
-		\phpbb\user $user,
-		\phpbb\template\template $template,
-		\phpbb\db\driver\driver_interface $db,
-		\phpbb\config\config $config,
-		\phpbb\request\request $request,
+		user $user,
+		template $template,
+		db_interface $db,
+		config $config,
+		request_interface $request,
 		$root_path,
 		$referral_table,
 		$referral_contests_table
@@ -167,7 +172,7 @@ class listener implements EventSubscriberInterface
 
 			$sql = 'UPDATE ' . USERS_TABLE . '
 				SET user_referrals = ' . $user_referrals . '
-				WHERE user_id = ' . $rid;
+				WHERE user_id = ' . (int) $rid;
 			$this->db->sql_query($sql);
 		}
 	}

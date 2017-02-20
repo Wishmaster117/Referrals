@@ -13,117 +13,43 @@ class ucp_referral_module
 {
 	public $u_action;
 
-	function main($id, $mode)
+	public function main($id, $mode)
 	{
-		global $config, $db, $phpbb_container, $user, $auth, $template, $phpbb_root_path, $phpEx, $request;
+		global $phpbb_container, $user;
 
-		// Get table
-		$table_referral = $phpbb_container->getParameter('dmzx.referral.table.referral');
-		$table_referral_contests = $phpbb_container->getParameter('dmzx.referral.table.referral.contests');
+		// Get an instance of the UCP controller
+		$controller = $phpbb_container->get('dmzx.referral.ucp.controller');
+
+		// Make the $u_action url available in the UCP controller
+		$controller->set_page_url($this->u_action);
 
 		switch ($mode)
 		{
 			case 'statistics':
-
+				// Load a template for our UCP page
 				$this->tpl_name = 'ucp_referral_statistics';
-				$this->page_title = 'UCP_STATISTICS';
-
-				$sql = 'SELECT COUNT(referral_username) as total_referrals
-					FROM ' . $table_referral . '
-					WHERE referrer_username="' . $user->data['username'] . '"';
-				$result = $db->sql_query($sql);
-				$total_referrals = $db->sql_fetchfield('total_referrals');
-				$db->sql_freeresult($result);
-
-				$sql = 'SELECT COUNT(contest_winner) as contest_winner
-					FROM ' . $table_referral_contests . '
-					WHERE contest_winner="' . $user->data['username'] . '"';
-				$result = $db->sql_query($sql);
-				$contest_winner = $db->sql_fetchfield('contest_winner');
-				$db->sql_freeresult($result);
-
-				$template->assign_vars(array(
-					'REFERRAL_LINK'	=> generate_board_url() . "/index.$phpEx?r=" . $user->data['user_id'],
-					'TOTAL_REFERRALS' => $total_referrals,
-					'CONTESTS_WON'	=> $contest_winner,
-				));
-
+				// Set the page title for our UCP page
+				$this->page_title = $user->lang['UCP_STATISTICS'];
+				// Load the display statistics handle in the ucp controller
+				$controller->display_statistics();
 			break;
 
 			case 'referrals':
-
+				// Load a template for our UCP page
 				$this->tpl_name = 'ucp_referral_referrals';
-				$this->page_title = 'UCP_REFERRALS';
-
-				$sql = 'SELECT *
-					FROM ' . $table_referral . '
-					LEFT JOIN ' . USERS_TABLE . '
-					ON referral_username=username
-					WHERE referrer_id = ' . $user->data['user_id'];
-					$result = $db->sql_query($sql);
-
-				while ($row = $db->sql_fetchrow($result))
-				{
-					$template->assign_block_vars('referrals',array(
-						'REFERRAL_USERNAME' => get_username_string('full', $row['user_id'], $row['referral_username'], $row['user_colour']),
-					));
-				}
-
+				// Set the page title for our UCP page
+				$this->page_title = $user->lang['UCP_REFERRALS'];
+				// Load the display referrals handle in the ucp controller
+				$controller->display_referrals();
 			break;
 
 			case 'invite':
-
+				// Load a template for our UCP page
 				$this->tpl_name = 'ucp_referral_invite';
-				$this->page_title = 'UCP_INVITE';
-
-				include_once($phpbb_root_path . 'includes/functions_messenger.' . $phpEx);
-				$messenger = new \messenger(false);
-
-				$submit			= (isset($_POST['submit'])) ? true : false;
-				$recipients		= $request->variable('recipients', '');
-				$sender_email 	= $request->variable('sender_email','');
-				$subject		= $request->variable('subject', '', true);
-				$message		= $request->variable('message', '', true);
-
-				$template->assign_vars(array(
-					'SENDER_EMAIL' => ($sender_email) ? $sender_email : $user->data['user_email'],
-					'RECIPIENTS'	=> $recipients,
-					'SUBJECT'		=> $subject,
-					'MESSAGE'		=> $message,
-				));
-
-				if ($submit)
-				{
-					$recipients = array_unique(explode("\n",$recipients));
-					$total_recipients = count($recipients);
-
-					if ($total_recipients >= 1 && !empty($sender_email) && !empty($subject) && !empty($message))
-					{
-						foreach ($recipients as $recipient)
-						{
-							$messenger->template('@dmzx_referral/referrals_send_invitation', $user->data['user_lang']);
-							$messenger->to($recipient, '');
-							$messenger->from($sender_email, '');
-							$messenger->assign_vars(array(
-								'SUBJECT'		 	=> $subject,
-								'MESSAGE'		 	=> $message,
-								'REFERRAL_LINK'		=> generate_board_url() . "/index.$phpEx?r=" . $user->data['user_id'],
-							));
-							$messenger->send();
-						}
-						$messenger->save_queue();
-
-						meta_refresh(3, $this->u_action);
-						$message = $user->lang['INVITATION_SENT'] . '<br /><br />' . sprintf($user->lang['RETURN_UCP'], '<a href="' . $this->u_action . '">', '</a>');
-						trigger_error($message);
-					}
-					else
-					{
-						$template->assign_vars(array(
-							'FORM_ERROR'		=> true,
-						));
-					}
-				}
+				// Set the page title for our UCP page
+				$this->page_title = $user->lang['UCP_INVITE'];
+				// Load the display invite handle in the ucp controller
+				$controller->display_invite();
 			break;
 		}
 	}
