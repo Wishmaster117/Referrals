@@ -1,1 +1,1 @@
-<!-- IF postrow.POSTER_REFERRALS --><dd><strong>{L_REFERRALS}{L_COLON}</strong> {postrow.POSTER_REFERRALS}</dd><!-- ENDIF -->
+{% if postrow.POSTER_REFERRALS %}<dd><strong>{{ lang('REFERRALS') }}{{ lang('COLON') }}</strong> {{ postrow.POSTER_REFERRALS }}</dd>{% endif %}

@@ -2,21 +2,26 @@
 	"name": "dmzx/referral",
 	"type": "phpbb-extension",
 	"description": "Allows members to refer others.",
-	"homepage": "http://www.dmzx-web.net",
-	"version": "1.0.4",
-	"time": "2017-02-20",
-	"keywords": ["phpbb", "extension", "referrals"],
-	"license": "GPL-2.0",
+	"homepage": "https://www.dmzx-web.net",
+	"version": "1.0.5",
+	"time": "2019-10-31",
+	"keywords": [
+		"phpbb",
+		"extension",
+		"referrals"
+	],
+	"license": "GPL-2.0-only",
 	"authors": [
 		{
 			"name": "dmzx",
-			"homepage": "http://www.dmzx-web.net",
+			"homepage": "https://www.dmzx-web.net",
 			"email": "info@dmzx-web.net",
 			"role": "Extension Developer"
 		}
 	],
 	"require": {
-		"php": ">=5.3.3"
+		"php": ">=5.3.3",
+		"composer/installers": "~1.0"
 	},
 	"require-dev": {
 		"phpbb/epv": "dev-master"
@@ -29,7 +34,8 @@
 		"version-check": {
 			"host": "www.dmzx-web.net",
 			"directory": "/versions",
-			"filename": "referral_version.json"
+			"filename": "referral_version.json",
+			"ssl": true
 		}
 	}
 }

@@ -2,7 +2,7 @@
 /**
 *
 * @package phpBB Extension - Referrals
-* @copyright (c) 2016 dmzx - http://www.dmzx-web.net
+* @copyright (c) 2016 dmzx - https://www.dmzx-web.net
 * @license http://opensource.org/licenses/gpl-2.0.php GNU General Public License v2
 *
 */
@@ -286,11 +286,12 @@ class admin_controller
 					COUNT(referrer_username) AS referrals_count
 					FROM ' . $this->referral_table . '
 						LEFT JOIN ' . USERS_TABLE . '
-						ON referral_username=username
+						ON referral_username = username
 					WHERE referral_since
-					BETWEEN ' . $start_date . ' AND ' . $end_date . '
+					BETWEEN ' . $start_date . '
+						AND ' . $end_date . '
 						AND user_posts >= ' . $ref_min_posts . '
-					GROUP BY referrer_username
+					GROUP BY user_id, referral_id, referrer_username
 					ORDER BY referrals_count DESC';
 				$result = $this->db->sql_query($sql);
 

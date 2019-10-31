@@ -1,18 +1,18 @@
-<!-- INCLUDE ucp_header.html -->
+{% INCLUDE 'ucp_header.html' %}
 
-<h2>{L_UCP_STATISTICS}</h2>
+<h2>{{ lang('UCP_STATISTICS') }}</h2>
 
 <div class="panel">
 	<div class="inner">
-		<h3>{L_YOUR_STATISTICS}</h3>
+		<h3>{{ lang('YOUR_STATISTICS') }}</h3>
 		<dl class="details">
-			<dt><b>{L_REFERRAL_LINK}{L_COLON}</b></dt> <dd>{REFERRAL_LINK}</dd>
+			<dt><b>{{ lang('REFERRAL_LINK') }}{{ lang('COLON') }}</b></dt> <dd>{{ REFERRAL_LINK }}</dd>
 			<dt></dt>
 			<dd></dd>
-			<dt>{L_MEMBERS_REFERRED}{L_COLON}</dt> <dd>{TOTAL_REFERRALS}</dd>
-			<dt>{L_CONTESTS_WON}{L_COLON}</dt> <dd>{CONTESTS_WON}</dd>
+			<dt>{{ lang('MEMBERS_REFERRED') }}{{ lang('COLON') }}</dt> <dd>{{ TOTAL_REFERRALS }}</dd>
+			<dt>{{ lang('CONTESTS_WON') }}{{ lang('COLON') }}</dt> <dd>{{ CONTESTS_WON }}</dd>
 		</dl>
 	</div>
 </div>
 
-<!-- INCLUDE ucp_footer.html -->
+{% INCLUDE 'ucp_footer.html' %}

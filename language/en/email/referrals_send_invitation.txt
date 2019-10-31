@@ -1,5 +1,5 @@
-Subject: {SUBJECT}
+Subject: {{ SUBJECT }}
 
-{MESSAGE}
+{{ MESSAGE }}
 
-{REFERRAL_LINK}
+{{ REFERRAL_LINK }}

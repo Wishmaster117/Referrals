@@ -3,7 +3,7 @@
 		<ul class="topiclist">
 			<li class="header">
 				<dl class="row-item">
-					<dd>{L_REFERRAL_CONTEST} ({CONTEST_NAME})</dd>
+					<dd>{{ lang('REFERRAL_CONTEST') }} ({{ CONTEST_NAME }})</dd>
 				</dl>
 			</li>
 		</ul>
@@ -12,30 +12,30 @@
 				<div id="contest-info">
 					<table>
 						<tr>
-							<td width="20%" valign="top"><b>{L_CONTEST_INFO}{L_COLON}</b></td>
-							<td>{CONTEST_DESCRIPTION}</td>
+							<td width="20%" valign="top"><b>{{ lang('CONTEST_INFO') }}{{ lang('COLON') }}</b></td>
+							<td>{{ CONTEST_DESCRIPTION }}</td>
 						</tr>
 						<tr>
-							<td><b>{L_CONTEST_START_DATE}{L_COLON}</b></td>
-							<td>{CONTEST_START_DATE}</td>
+							<td><b>{{ lang('CONTEST_START_DATE') }}{{ lang('COLON') }}</b></td>
+							<td>{{ CONTEST_START_DATE }}</td>
 						</tr>
 						<tr>
-							<td><b>{L_CONTEST_END_DATE}{L_COLON}</b></td>
-							<td>{CONTEST_END_DATE}</td>
+							<td><b>{{ lang('CONTEST_END_DATE') }}{{ lang('COLON') }}</b></td>
+							<td>{{ CONTEST_END_DATE }}</td>
 						</tr>
 						<tr>
-							<td><b>{L_CONTEST_STATUS}{L_COLON}</b></td>
-							<td><b>{CONTEST_STATUS}</b></td>
+							<td><b>{{ lang('CONTEST_STATUS') }}{{ lang('COLON') }}</b></td>
+							<td><b>{{ CONTEST_STATUS }}</b></td>
 						</tr>
 					</table>
 				</div>
 				<div id="contest-stastistics">
-					<p><b>{L_TOP_THREE_REFERRERS}{L_COLON}</b></p>
-					<!-- BEGIN contest_stats -->
-					<p>{contest_stats.CONTEST_POS} {contest_stats.REFERRER_USERNAME} ({contest_stats.REFERRALS_COUNT})</p>
-					<!-- BEGINELSE -->
-					<p>{L_NO_REFERRERS}</p>
-					<!-- END contest_stats -->
+					<p><b>{{ lang('TOP_THREE_REFERRERS') }}{{ lang('COLON') }}</b></p>
+					{% for contest_stats in loops.contest_stats %}
+					<p>{{ contest_stats.CONTEST_POS }} {{ contest_stats.REFERRER_USERNAME }} ({{ contest_stats.REFERRALS_COUNT }})</p>
+					{% else %}
+					<p>{{ lang('NO_REFERRERS') }}</p>
+					{% endfor %}
 				</div>
 				<div class="clear"></div>
 			</li>

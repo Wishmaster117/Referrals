@@ -1,18 +1,18 @@
-<!-- INCLUDE ucp_header.html -->
+{% INCLUDE 'ucp_header.html' %}
 
-<h2>{L_UCP_REFERRALS}</h2>
+<h2>{{ lang('UCP_REFERRALS') }}</h2>
 
 <div class="panel">
 	<div class="inner">
-		<h3>{L_YOUR_REFERRALS}</h3>
+		<h3>{{ lang('YOUR_REFERRALS') }}</h3>
 		<p>
-		<!-- BEGIN referrals -->
-		{referrals.REFERRAL_USERNAME}<!-- IF not referrals.S_LAST_ROW -->,<!-- ENDIF -->
-		<!-- BEGINELSE -->
-		{L_NO_REFERRALS}
-		<!-- END referrals -->
+		{% for referrals in loops.referrals %}
+		{{ referrals.REFERRAL_USERNAME }}{% if not referrals.S_LAST_ROW %},{% endif %}
+		{% else %}
+		{{ lang('NO_REFERRALS') }}
+		{% endfor %}
 		</p>
 	</div>
 </div>
 
-<!-- INCLUDE ucp_footer.html -->
+{% INCLUDE 'ucp_footer.html' %}
