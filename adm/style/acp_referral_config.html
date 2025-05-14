@@ -38,6 +38,56 @@
 				<label><input name="display_referral_contests" type="radio" {% if not DISPLAY_REFERRAL_CONTESTS %} checked="checked"{% endif %} class="radio" value="0" /> {{ lang('NO') }}</label>
 			</dd>
 		</dl>
+		<!-- Nouveau pour attribuer les points -->
+		<dl>
+		<dt><label for="referral_points_per_referral">{{ lang('REFERRAL_POINTS') }}{{ lang('COLON') }}</label></dt>
+			<dd>
+				<label><input id="referral_points_per_referral" name="referral_points_per_referral" type="number" min="1" max="999" value="{{ REFERRAL_POINTS_PER_REFERRAL }}" /> {{ lang('REFERRAL_POINTS_EXPLAIN') }}</label>
+			</dd>
+		</dl>
+		<!-- Fin -->
+		<!-- Nouveau pour autogroupes-->
+		<dl>
+		<dt><label for="referral_promo_threshold">{{ lang('REFERRAL_PROMO_THRESHOLD') }}{{ lang('COLON') }}</label></dt>
+		<dd>
+			<input id="referral_promo_threshold" name="referral_promo_threshold" type="number" min="0"
+				value="{{ REFERRAL_PROMO_THRESHOLD }}" />
+			<p>{{ lang('REFERRAL_PROMO_THRESHOLD_EXPLAIN') }}</p>
+		</dd>
+		</dl>
+		
+		<dl>
+		<dt><label for="referral_promo_group">{{ lang('REFERRAL_PROMO_GROUP') }}{{ lang('COLON') }}</label></dt>
+		<dd>
+			<select id="referral_promo_group" name="referral_promo_group">
+			{{ GROUP_OPTIONS|raw }}
+			</select>
+			<p>{{ lang('REFERRAL_PROMO_GROUP_EXPLAIN') }}</p>
+		</dd>
+		</dl>
+		<dl>
+		<dt><label for="referral_promo_default">{{ lang('REFERRAL_PROMO_DEFAULT') }}{{ lang('COLON') }}</label></dt>
+		<dd>
+			<label>
+			<input type="radio"
+					id="referral_promo_default_yes"
+					name="referral_promo_default"
+					value="1"
+					{% if REFERRAL_PROMO_DEFAULT %}checked="checked"{% endif %} />
+			{{ lang('YES') }}
+			</label>
+			<label>
+			<input type="radio"
+					id="referral_promo_default_no"
+					name="referral_promo_default"
+					value="0"
+					{% if not REFERRAL_PROMO_DEFAULT %}checked="checked"{% endif %} />
+			{{ lang('NO') }}
+			</label>
+			<p>{{ lang('REFERRAL_PROMO_DEFAULT_EXPLAIN') }}</p>
+		</dd>
+		</dl>
+		<!-- Fin -->
 	</fieldset>
 
 	<p class="submit-buttons">

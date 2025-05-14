@@ -50,4 +50,21 @@ $lang = array_merge($lang, array(
 	'CONTEST_IN_PROGRESS' 	=> 'Lopende',
 	'CONTEST_OVER'			=> 'Be&euml;indigd',
 	'TOP_THREE_REFERRERS' 	=> 'Top 3 doorverwijzers',
+	// Nederlands
+	'REFERRAL_POINTS'         => 'Punten per doorverwijzing',
+	'REFERRAL_POINTS_EXPLAIN' => 'Aantal punten dat aan de doorverwijzer wordt toegekend voor elke succesvolle registratie.',
+	// Nieuw
+	'REFERRAL_POINTS'         => 'Punten per petekind',
+	'REFERRAL_POINTS_EXPLAIN' => 'Aantal punten toegekend aan de peter voor elke gevalideerde registratie.',
+	'REFERRAL_PROMO_THRESHOLD'         => 'Promotiedrempel (punten)',
+	
+	// Automatische groep
+	'REFERRAL_PROMO_THRESHOLD_EXPLAIN' => 'Wanneer het aantal punten van de peter deze drempel bereikt of overschrijdt, wordt hij automatisch toegevoegd aan de geselecteerde groep. Indien 0, wordt geen groep toegewezen.',
+	'REFERRAL_PROMO_GROUP'             => 'Promotiegroep',
+	'REFERRAL_PROMO_GROUP_EXPLAIN'     => 'Groep waarin de peter wordt geplaatst wanneer hij de ingestelde drempel bereikt.',
+	
+	// Standaardgroep instellen: ja/nee
+	'REFERRAL_PROMO_DEFAULT'         => 'Instellen als standaardgroep',
+	'REFERRAL_PROMO_DEFAULT_EXPLAIN' => 'Indien aangevinkt, wordt de promotiegroep de standaardgroep van de gebruiker bij promotie.',
+	'L_YOUR_POINTS' => 'Aantal punten.',
 ));

@@ -49,4 +49,16 @@ $lang = array_merge($lang, array(
 	'CONTEST_IN_PROGRESS' 	=> 'In progress',
 	'CONTEST_OVER'			=> 'Ended',
 	'TOP_THREE_REFERRERS' 	=> 'Top 3 referrers',
+	// New
+	'REFERRAL_POINTS'         => 'Points per referral',
+	'REFERRAL_POINTS_EXPLAIN' => 'Number of points awarded to the sponsor for each validated registration.',
+	'REFERRAL_PROMO_THRESHOLD'         => 'Promotion threshold (points)',
+	// Auto group
+	'REFERRAL_PROMO_THRESHOLD_EXPLAIN' => 'When the sponsor’s points reach or exceed this threshold, they will automatically be added to the selected group. If set to 0, no group will be assigned.',
+	'REFERRAL_PROMO_GROUP'             => 'Promotion group',
+	'REFERRAL_PROMO_GROUP_EXPLAIN'     => 'Group the sponsor will be added to when reaching the defined threshold.',
+	// Default group selection yes/no
+	'REFERRAL_PROMO_DEFAULT'         => 'Set as default group',
+	'REFERRAL_PROMO_DEFAULT_EXPLAIN' => 'If checked, the promotion group will become the user’s default group upon promotion.',
+	'L_YOUR_POINTS' => 'Number of points.',
 ));

@@ -45,6 +45,10 @@ class admin_controller
 	/** @var string */
 	protected $referral_contests_table;
 
+	/** @var string */
+	protected $php_ext;
+
+
 	/**
 	* Constructor
 	*
@@ -67,9 +71,10 @@ class admin_controller
 		request_interface	$request,
 		pagination $pagination,
 		$root_path,
+		$php_ext,                     // ← nouveau paramètre
 		$referral_table,
 		$referral_contests_table
-	)
+	)		
 	{
 		$this->user						= $user;
 		$this->template					= $template;
@@ -78,6 +83,7 @@ class admin_controller
 		$this->request					= $request;
 		$this->pagination 				= $pagination;
 		$this->root_path 				= $root_path;
+		$this->php_ext   			    = $php_ext;     // ← nouveau
 		$this->referral_table 			= $referral_table;
 		$this->referral_contests_table 	= $referral_contests_table;
 
@@ -91,6 +97,25 @@ class admin_controller
 		$user_referrals_viewtopic	= $this->request->variable('user_referrals_viewtopic', 0);
 		$user_referrals_profile		= $this->request->variable('user_referrals_profile', 0);
 		$display_referral_contests 	= $this->request->variable('display_referral_contests', 0);
+		
+		// Récupérer les valeurs POST ou config existante
+		$promo_threshold = $this->request->variable('referral_promo_threshold', (int) $this->config['referral_promo_threshold']);
+		$promo_group     = $this->request->variable('referral_promo_group',     (int) $this->config['referral_promo_group']);
+
+		 // ← NOUVEAU : champ « Points par filleul »
+		$points_per_referral = $this->request->variable(
+        'referral_points_per_referral',
+        isset($this->config['referral_points_per_referral'])
+            ? (int) $this->config['referral_points_per_referral']
+            : 1
+		);
+		// ← NOUVEAU : champ « Définir comme groupe par défaut ? »
+		$promo_default = $this->request->variable(
+		'referral_promo_default',
+		isset($this->config['referral_promo_default'])
+        ? (int) $this->config['referral_promo_default']
+        : 0
+		);
 
 		if ($submit)
 		{
@@ -98,9 +123,18 @@ class admin_controller
 			$this->config->set('user_referrals_viewtopic', $user_referrals_viewtopic);
 			$this->config->set('user_referrals_profile', $user_referrals_profile);
 			$this->config->set('referral_contests_display', $display_referral_contests);
+			// Autogroupes
+			$this->config->set('referral_promo_threshold', $promo_threshold);
+			$this->config->set('referral_promo_group',     $promo_group);
+			$this->config->set('referral_promo_default', $promo_default);
+			// ← NOUVEAU : enregistrement en base
+			$this->config->set('referral_points_per_referral', $points_per_referral);
 
 			trigger_error(sprintf($this->user->lang['CONFIG_UPDATED']) . adm_back_link($this->u_action));
 		}
+
+		include_once($this->root_path . 'includes/functions_user.' . $this->php_ext); // Ajout autogroupes
+		$group_options = group_select_options($promo_group, false, false, true); // Ajout autogroupes
 
 		$this->template->assign_vars(array(
 			'TOP_FIVE_REFERRERS'		=> $this->config['top_five_referrers'],
@@ -108,6 +142,10 @@ class admin_controller
 			'USER_REFERRALS_PROFILE'	=> $this->config['user_referrals_profile'],
 			'DISPLAY_REFERRAL_CONTESTS' => $this->config['referral_contests_display'],
 			'MOD_VERSION'	 			=> $this->config['referral_mod_version'],
+			'REFERRAL_POINTS_PER_REFERRAL' => $points_per_referral, // ← NOUVEAU
+			'REFERRAL_PROMO_THRESHOLD' => $promo_threshold,
+			'REFERRAL_PROMO_GROUP'     => $promo_group, // Autogroupes
+			'GROUP_OPTIONS'             => $group_options,     // ← nouvelle variable Autogroupes
 			'U_ACTION'					=> $this->u_action,
 		));
 	}

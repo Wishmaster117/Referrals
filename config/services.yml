@@ -11,6 +11,7 @@ services:
             - '@request'
             - '@pagination'
             - '%core.root_path%'
+            - '%core.php_ext%'
             - '%dmzx.referral.table.referral%'
             - '%dmzx.referral.table.referral.contests%'
     dmzx.referral.ucp.controller:
@@ -33,6 +34,7 @@ services:
             - '@config'
             - '@request'
             - '%core.root_path%'
+            - '%core.php_ext%'                      # ← AJOUTÉ
             - '%dmzx.referral.table.referral%'
             - '%dmzx.referral.table.referral.contests%'
         tags:

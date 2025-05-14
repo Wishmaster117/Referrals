@@ -49,4 +49,16 @@ $lang = array_merge($lang, array(
 	'CONTEST_IN_PROGRESS' 		=> 'En cours',
 	'CONTEST_OVER'				=> 'Terminé',
 	'TOP_THREE_REFERRERS' 		=> 'Top 3 Parrains/référents',
+	// Nouveau
+	'REFERRAL_POINTS'         => 'Points par filleul',
+	'REFERRAL_POINTS_EXPLAIN' => 'Nombre de points attribués au parrain pour chaque inscription validée.',
+	'REFERRAL_PROMO_THRESHOLD'         => 'Seuil de promotion (points)',
+	// Auto groupe
+	'REFERRAL_PROMO_THRESHOLD_EXPLAIN' => 'Lorsque le nombre de points du parrain atteint ou dépasse ce seuil, il sera automatiquement ajouté au groupe sélectionné. Si 0, il ne sera ajouté à aucun groupe.',
+	'REFERRAL_PROMO_GROUP'             => 'Groupe de promotion',
+	'REFERRAL_PROMO_GROUP_EXPLAIN'     => 'Groupe dans lequel le parrain sera ajouté lorsqu’il atteint le seuil défini.',
+	// choix su groupe par defaut oui non
+	'REFERRAL_PROMO_DEFAULT'         => 'Définir comme groupe par défaut',
+	'REFERRAL_PROMO_DEFAULT_EXPLAIN' => 'Si coché, le groupe de promotion deviendra le groupe par défaut de l’utilisateur lors de la promotion.',
+	'L_YOUR_POINTS' => 'Nombre de Points.',
 ));

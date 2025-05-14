@@ -94,6 +94,8 @@ class ucp_controller
 			'REFERRAL_LINK'		=> generate_board_url() . "/index.$this->php_ext?r=" . $this->user->data['user_id'],
 			'TOTAL_REFERRALS' 	=> $total_referrals,
 			'CONTESTS_WON'		=> $contest_winner,
+			// NOUVEAU : récupérer le compteur user_referrals
+			'POINTS'           => (int) $this->user->data['user_referrals'],
 		));
 	}
 

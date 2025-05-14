@@ -49,4 +49,18 @@ $lang = array_merge($lang, array(
 	'CONTEST_IN_PROGRESS' 	=> 'In Bearbeitung',
 	'CONTEST_OVER'			=> 'Beendet',
 	'TOP_THREE_REFERRERS' 	=> 'Top 3 Verweiser',
+	// Neu
+	'REFERRAL_POINTS'         => 'Punkte pro Schützling',
+	'REFERRAL_POINTS_EXPLAIN' => 'Anzahl der Punkte, die dem Paten für jede bestätigte Registrierung seines Schützlings gutgeschrieben werden.',
+	'REFERRAL_PROMO_THRESHOLD'         => 'Beförderungsschwelle (Punkte)',
+	
+	// Automatische Gruppe
+	'REFERRAL_PROMO_THRESHOLD_EXPLAIN' => 'Wenn die Punktzahl des Paten diesen Schwellenwert erreicht oder überschreitet, wird er automatisch der ausgewählten Gruppe hinzugefügt. Bei 0 wird keine Gruppe zugewiesen.',
+	'REFERRAL_PROMO_GROUP'             => 'Beförderungsgruppe',
+	'REFERRAL_PROMO_GROUP_EXPLAIN'     => 'Gruppe, der der Pate bei Erreichen des festgelegten Schwellenwerts hinzugefügt wird.',
+	
+	// Standardgruppe festlegen: Ja/Nein
+	'REFERRAL_PROMO_DEFAULT'         => 'Als Standardgruppe festlegen',
+	'REFERRAL_PROMO_DEFAULT_EXPLAIN' => 'Wenn aktiviert, wird die Beförderungsgruppe zur Standardgruppe des Benutzers bei der Beförderung.',
+	'L_YOUR_POINTS' => 'Anzahl der Punkte.',
 ));
